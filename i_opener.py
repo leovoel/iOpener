@@ -51,6 +51,15 @@ def get_completion(path):
     list of candidates l. Returns new_path, status, completed.
     Find filename and directory.
     """
+    # shortcut to find where we are currently
+    if path == ".":
+        if sublime.active_window().folders():
+            return sublime.active_window().folders()[0], COMPLETION_TYPE.Complete
+        else:
+            view_filename = sublime.active_window().active_view().file_name()
+            directory, _ = split(view_filename)
+            return directory, COMPLETION_TYPE.Complete
+
     directory, filename = split(path)
 
     if not isdir(expanduser(directory)):
